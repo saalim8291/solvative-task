@@ -1,20 +1,43 @@
 import { useState } from "react";
 import "./InfoTable.css";
+import { getPlacesApi } from "../../apis/places";
 
 const InfoTable = ({
   dataSource,
-  totalCount,
   limit,
   setLimit,
   loading,
+  setLoading,
   searchText,
+  totalPages,
+  setDataSource,
+  setTotalCount,
+  setTotalPages
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(totalCount / limit);
+    const getPlacesData = async (page) => {
+
+        if(!searchText) {
+          alert("Please enter search text.");
+          return;
+        }
+    
+        setLoading(true);
+        const response = await getPlacesApi(searchText, limit, page);
+        
+        if (response?.status === 200) {
+          setDataSource(response.data?.data);
+          setTotalCount(response.data?.metadata?.totalCount);
+          setTotalPages(Math.ceil(response.data?.metadata?.totalCount / limit))
+        } else {
+          alert("Something went wrong!");
+        }
+        setLoading(false);
+      };
 
   const goToPage = (page) => {
     console.log(page, "page");
+    getPlacesData(page)
   };
 
   const limitChangeHandler = (e) => {
@@ -63,25 +86,27 @@ const InfoTable = ({
           </div>
         )}
 
-        <div className="pagination">
-          <div>
-            {dataSource &&
-              dataSource.length > 0 &&
-              Array.from(Array(totalPages).keys()).map((page) => (
-                <button key={page} onClick={() => goToPage(page + 1)}>
-                  {page + 1}
-                </button>
-              ))}
+        {dataSource && dataSource.length > 0 && (
+          <div className="pagination">
+            <div>
+              {dataSource &&
+                dataSource.length > 0 &&
+                Array.from(Array(totalPages).keys()).map((page) => (
+                  <button key={page} onClick={() => goToPage(page + 1)}>
+                    {page + 1}
+                  </button>
+                ))}
+            </div>
+            <div className="limit">
+              <input
+                type="number"
+                placeholder="limit records (1 to 10)"
+                onChange={limitChangeHandler}
+                value={limit}
+              />
+            </div>
           </div>
-          <div className="limit">
-            <input
-              type="number"
-              placeholder="limit records (1 to 10)"
-              onChange={limitChangeHandler}
-              value={limit}
-            />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

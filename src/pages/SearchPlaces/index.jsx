@@ -5,11 +5,11 @@ import SearchBox from "../../components/SearchBox";
 
 const SearchPlaces = () => {
   const [dataSource, setDataSource] = useState(null);
-  const [pageSize, setPageSize] = useState(3);
   const [limit, setLimit] = useState(5);
   const [searchText, setSearchText] = useState('');
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
   
   return (
     <div className="search-places-page">
@@ -21,15 +21,20 @@ const SearchPlaces = () => {
         limit={limit}
         loading={loading}
         setLoading={setLoading}
+        setTotalPages={setTotalPages}
       />
       <InfoTable
+        setDataSource={setDataSource}
         dataSource={dataSource}
-        pageSize={pageSize}
         totalCount={totalCount}
         limit={limit}
         setLimit={setLimit}
+        setLoading={setLoading}
         loading={loading}
         searchText={searchText}
+        totalPages={totalPages}
+        setTotalCount={setTotalCount}
+        setTotalPages={setTotalPages}
       />
     </div>
   );

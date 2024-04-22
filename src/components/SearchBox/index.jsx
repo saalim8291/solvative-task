@@ -8,6 +8,7 @@ const SearchBox = ({
   setTotalCount,
   limit,
   setLoading,
+  setTotalPages
 }) => {
   const getPlacesData = async () => {
 
@@ -22,6 +23,7 @@ const SearchBox = ({
     if (response?.status === 200) {
       setDataSource(response.data?.data);
       setTotalCount(response.data?.metadata?.totalCount);
+      setTotalPages(Math.ceil(response.data?.metadata?.totalCount / limit))
     } else {
       alert("Something went wrong!");
     }
