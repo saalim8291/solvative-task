@@ -18,13 +18,7 @@ const InfoTable = ({
   };
 
   const limitChangeHandler = (e) => {
-    const value = Number(e.target.value);
-    console.log(typeof value, "value");
-    if (value > 0 && value <= 10) {
-      setLimit(value);
-    } else {
-      alert("Limit can be 1 to 10 only");
-    }
+    setLimit(e.target.value);
   };
 
   return (

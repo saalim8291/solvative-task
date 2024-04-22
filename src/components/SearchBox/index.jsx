@@ -33,7 +33,7 @@ const SearchBox = ({
       if (limit > 0 && limit <= 10) {
         getPlacesData();
       } else {
-        alert("Invalid limit");
+        alert("Limit can be 1 to 10 only");
       }
     }
   };
@@ -53,7 +53,7 @@ const SearchBox = ({
         onKeyDown={handleShortcut}
         value={searchText}
       />
-      <div className="keyboard-shortcut" onClick={() => getPlacesData()}>
+      <div className="keyboard-shortcut">
         Ctrl + /
       </div>
     </div>
